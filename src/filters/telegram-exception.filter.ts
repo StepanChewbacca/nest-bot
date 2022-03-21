@@ -1,7 +1,7 @@
 import { ArgumentsHost, Catch, HttpException } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
-import { ConfigService } from '../config/config.service';
 import axios from 'axios';
+import { ConfigService } from '../config/config.service';
 
 @Catch()
 export class TelegramExceptionsFilter extends BaseExceptionFilter {

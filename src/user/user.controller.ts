@@ -14,6 +14,8 @@ import { MessageDto } from '../dto/message.dto';
 import { DeleteUserDto } from '../dto/delete-user.dto';
 import { HttpExceptionFilter } from '../filters/http-exception.filter';
 import { TransformResponseInterceptor } from '../interseptors/transform-response.interceptor';
+import { IUser } from '../interface/user.interface';
+import { IDeleteUser } from '../interface/detele-user.interface';
 
 @Controller('users')
 @UseFilters(HttpExceptionFilter)
@@ -29,7 +31,7 @@ export class UserController {
 
   @Delete()
   @HttpCode(200)
-  async deleteUser(@Query() deleteUser: DeleteUserDto) {
+  async deleteUser(@Query() deleteUser: IDeleteUser) {
     return this.userService.deleteUser(deleteUser);
   }
 

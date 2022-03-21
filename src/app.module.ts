@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schemas/user.schema';
 import { UserModule } from './user/user.module';
+import { UserRepository } from './user/user.repository';
 
 @Module({
   imports: [
@@ -20,6 +21,6 @@ import { UserModule } from './user/user.module';
     UserModule,
   ],
   controllers: [],
-  providers: [TelegramProvider, ConfigService],
+  providers: [TelegramProvider, UserRepository],
 })
 export class AppModule {}

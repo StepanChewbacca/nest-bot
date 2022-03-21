@@ -9,7 +9,7 @@ export class User implements IUser {
   @Prop({ required: true, unique: true, type: Number })
   user_id: number;
 
-  @Prop({ default: '', unique: true, type: String })
+  @Prop({ default: null, type: String })
   username: string;
 
   @Prop({ default: Date.now(), type: Date })

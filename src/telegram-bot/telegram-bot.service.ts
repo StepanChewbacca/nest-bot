@@ -1,49 +1,49 @@
 import { Injectable, UseFilters } from '@nestjs/common';
-import { Ctx, Hears, On, Start, Update } from 'nestjs-telegraf';
-import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from '../schemas/user.schema';
-import { Model } from 'mongoose';
+import {
+  Ctx, Hears, On, Start, Update,
+} from 'nestjs-telegraf';
 import { TelegramExceptionsFilter } from '../filters/telegram-exception.filter';
 import { IContext } from '../interface/context-telegram.interface';
+import { UserRepository } from '../user/user.repository';
 
 @Injectable()
 @Update()
 @UseFilters(TelegramExceptionsFilter)
 export class TelegramProvider {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(private userRepository: UserRepository) {}
 
   @Start()
-  async createUser(@Ctx() ctx: IContext) {
+  async createUser(@Ctx() ctx: IContext): Promise<void> {
     const user = {
       user_id: ctx.update.message.from.id,
       username: ctx.update.message.from.username,
       chat_id: ctx.update.message.chat.id,
     };
 
-    const createdUser = new this.userModel(user);
-    await createdUser.save();
+    await this.userRepository.createUser(user);
 
-    const username = ctx.update.message.from.username;
+    const { username } = ctx.update.message.from;
+
     if (username) {
       await ctx.reply(`Hello ${username}`);
     } else {
-      await ctx.reply(`Hello my friend`);
+      await ctx.reply('Hello my friend');
     }
   }
 
   @Hears('Слава Україні')
-  async sayGloryUkraine(@Ctx() ctx: IContext) {
-    await ctx.reply(`Героям Слава`);
+  async sayGloryUkraine(@Ctx() ctx: IContext): Promise<void> {
+    await ctx.reply('Героям Слава');
   }
 
   @On('text')
-  async getHello(@Ctx() ctx: IContext) {
-    const username = ctx.update.message.from.username;
+  async getHello(@Ctx() ctx: IContext): Promise<void> {
+    const { username } = ctx.update.message.from;
 
     if (username) {
       await ctx.reply(`Hello ${username}`);
     } else {
-      await ctx.reply(`Hello my friend`);
+      await ctx.reply('Hello my friend');
     }
   }
 }

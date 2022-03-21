@@ -1,12 +1,10 @@
-import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from '../schemas/user.schema';
-import { ConfigService } from '../config/config.service';
 import axios from 'axios';
-import { MessageDto } from '../dto/message.dto';
-import { DeleteUserDto } from '../dto/delete-user.dto';
+import { User } from '../schemas/user.schema';
+import { ConfigService } from '../config/config.service';
 import { UserRepository } from './user.repository';
+import { IDeleteUser } from '../interface/detele-user.interface';
+import { IMessage } from '../interface/message.interface';
 
 @Injectable()
 export class UserService {
@@ -16,19 +14,21 @@ export class UserService {
     return this.userRepository.getAllUsers();
   }
 
-  async deleteUser(deleteUserDto: DeleteUserDto) {
-    return this.userRepository.deleteUser(deleteUserDto);
+  async deleteUser(user: IDeleteUser) {
+    return this.userRepository.deleteUser(user);
   }
 
-  async sendMessage(messageDto: MessageDto): Promise<string> {
-    const user = await this.userRepository.findUser(messageDto.user_id);
+  async sendMessage(message: IMessage): Promise<string> {
+    const user = await this.userRepository.findUser(message.user_id);
 
     const url = encodeURI(
       `${ConfigService.getCustomKey('BOT_LINK')}${user.user_id}&text=${
-        messageDto.message
+        message.message
       }`,
     );
+
     await axios.get(url);
+
     return 'message was sent';
   }
 }

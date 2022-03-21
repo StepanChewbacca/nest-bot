@@ -2,8 +2,8 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { User, UserDocument } from '../schemas/user.schema';
-import { DeleteUserDto } from '../dto/delete-user.dto';
 import { ICreateUser } from '../interface/create-user.interface';
+import { IDeleteUser } from '../interface/detele-user.interface';
 
 @Injectable()
 export class UserRepository {
@@ -17,8 +17,8 @@ export class UserRepository {
     return this.userModel.find().exec();
   }
 
-  async deleteUser(deleteUserDto: DeleteUserDto) {
-    return this.userModel.deleteOne(deleteUserDto);
+  async deleteUser(user: IDeleteUser) {
+    return this.userModel.deleteOne(user);
   }
 
   async findUser(user_id: number): Promise<User> {

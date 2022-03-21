@@ -14,7 +14,7 @@ export class UserService {
     return this.userRepository.getAllUsers();
   }
 
-  async deleteUser(user: IDeleteUser) {
+  async deleteUser(user: IDeleteUser): Promise<User> {
     return this.userRepository.deleteUser(user);
   }
 

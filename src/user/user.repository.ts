@@ -17,8 +17,8 @@ export class UserRepository {
     return this.userModel.find().exec();
   }
 
-  async deleteUser(user: IDeleteUser) {
-    return this.userModel.deleteOne(user);
+  async deleteUser(user: IDeleteUser): Promise<User> {
+    return this.userModel.findOneAndDelete({ user });
   }
 
   async findUser(user_id: number): Promise<User> {

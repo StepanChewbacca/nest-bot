@@ -30,7 +30,7 @@ export class UserController {
 
   @Delete()
   @HttpCode(200)
-  async deleteUser(@Query() deleteUser: IDeleteUser) {
+  async deleteUser(@Query() deleteUser: IDeleteUser): Promise<User> {
     return this.userService.deleteUser(deleteUser);
   }
 

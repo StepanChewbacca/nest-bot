@@ -1,4 +1,6 @@
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsNotEmpty, IsNumber, IsString,
+} from 'class-validator';
 import { IMessage } from '../interface/message.interface';
 
 export class MessageDto implements IMessage {
@@ -6,7 +8,7 @@ export class MessageDto implements IMessage {
   @IsNotEmpty()
   message: string;
 
-  @IsInt()
+  @IsNumber()
   @IsNotEmpty()
-  user_id: number;
+  chat_id: number;
 }

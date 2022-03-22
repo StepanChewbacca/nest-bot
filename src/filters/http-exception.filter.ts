@@ -11,13 +11,13 @@ import { ConfigService } from '../config/config.service';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
-  async catch(exception: HttpException, host: ArgumentsHost) {
+  async catch(exception: HttpException, host: ArgumentsHost): Promise<Response> {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
 
-    const error = response.status(status).json({
+    const error = JSON.stringify({
       timestamp: new Date().toISOString(),
       path: request.url,
       exception: exception.getResponse(),
@@ -29,6 +29,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     await axios.get(url);
 
-    return error;
+    return response.status(status).json(JSON.parse(error));
   }
 }
